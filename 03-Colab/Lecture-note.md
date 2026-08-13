@@ -97,4 +97,19 @@ Có sáu loại biểu đồ chính:
 4. **Tinh chỉnh tinh tế (Iterative Prompting)**: Yêu cầu AI chỉnh sửa các chi tiết cụ thể (ví dụ: *"Đổi màu dải phân bố sang xanh lam, xoay nhãn trục X 45 độ và thêm đường kẻ lưới nét đứt"*).
 5. **Lưu ý quan trọng**: Biểu đồ AI vẽ ra có thể rất đẹp nhưng vẫn có nguy cơ sai lệch giá trị hoặc nhầm lẫn logic phân tích. Người làm phân tích **luôn phải đối chiếu và kiểm tra tính chính xác của dữ liệu**.
 
+## 3.4 Làm gì khi chưa có ý đồ phân tích?
+Khi đứng trước một tập dữ liệu mới mà chưa biết bắt đầu từ đâu hoặc chưa có sẵn câu hỏi/giả thuyết cụ thể, bạn có thể tận dụng AI theo các bước sau để tìm kiếm ý tưởng:
+
+1. **Yêu cầu AI tóm tắt và khám phá tổng quan (EDA - Exploratory Data Analysis)**:
+   - Cung cấp cho AI kết quả của `df.info()`, `df.describe()` hoặc 5 dòng đầu `df.head()`.
+   - Đặt câu lệnh: *"Hãy tóm tắt đặc điểm tập dữ liệu này, chỉ ra các biến quan trọng, giá trị thiếu (missing values) và gợi ý các hướng khám phá ban đầu."*
+2. **Nhờ AI đề xuất các câu hỏi và giả thuyết phân tích**:
+   - Đặt câu lệnh: *"Dựa vào cấu trúc dữ liệu trên, hãy gợi ý cho tôi 5 câu hỏi phân tích có giá trị nhất hoặc các giả thuyết có thể kiểm định."*
+3. **Tạo đồ thị tổng quan tự động (Overview Dashboard / Quick Scan)**:
+   - Yêu cầu AI sinh code vẽ biểu đồ Ma trận Tương quan (Correlation Heatmap) cho các biến số, hoặc Ma trận Phân tán (Pairplot) để nhìn nhanh mối liên hệ giữa các cặp biến.
+   - Yêu cầu AI gợi ý và vẽ 3-4 biểu đồ cơ bản nhất đại diện cho các khía cạnh khác nhau của dữ liệu.
+4. **Đào sâu theo vệt phát hiện (Drill-down)**:
+   - Khi nhìn thấy điểm bất thường (outlier), sự lệch phân bố (skewness) hoặc một xu hướng lạ từ biểu đồ tổng quan, hãy chụp hình hoặc mô tả lại điểm đó cho AI và yêu cầu đào sâu: *"Tôi thấy cột X có phân bố bị lệch phải rất mạnh, hãy gợi ý biểu đồ phân rã hoặc phân nhóm cột X theo cột Y để giải thích nguyên nhân."*
+
+
 
