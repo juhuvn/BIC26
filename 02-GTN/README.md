@@ -1,0 +1,1 @@
+Thư mục này rỗng một cách có chủ ý.
