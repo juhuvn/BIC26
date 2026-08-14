@@ -3,8 +3,6 @@ Trực quan hóa dữ liệu
 
 **Dr. Cuong Nguyen**
 - CSO, LOBI Corp.
-- [cuongnguyen@lobi.vn](mailto:cuongnguyen@lobi.vn) — 0916.110.333
-- https://github.com/juhuvn
 - 2026-08-18
 
 ----
@@ -224,10 +222,48 @@ df.head()
 # Xem thông tin tổng quan: tên cột, kiểu dữ liệu, giá trị thiếu
 df.info()
 ```
+
+Kết quả:
+
+```
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 344 entries, 0 to 343
+Data columns (total 9 columns):
+ #   Column             Non-Null Count  Dtype  
+---  ------             --------------  -----  
+ 0   rowid              344 non-null    int64  
+ 1   species            344 non-null    object 
+ 2   island             344 non-null    object 
+ 3   bill_length_mm     342 non-null    float64
+ 4   bill_depth_mm      342 non-null    float64
+ 5   flipper_length_mm  342 non-null    float64
+ 6   body_mass_g        342 non-null    float64
+ 7   sex                333 non-null    object 
+ 8   year               344 non-null    int64  
+dtypes: float64(4), int64(2), object(3)
+memory usage: 24.3+ KB
+```
+
 ```python
 # Thống kê mô tả các biến số
 df.describe()
 ```
+
+Kết quả:
+
+```
+|index|rowid|bill\_length\_mm|bill\_depth\_mm|flipper\_length\_mm|body\_mass\_g|year|
+|---|---|---|---|---|---|---|
+|count|344\.0|342\.0|342\.0|342\.0|342\.0|344\.0|
+|mean|172\.5|43\.9219298245614|17\.151169590643274|200\.91520467836258|4201\.754385964912|2008\.0290697674418|
+|std|99\.44847912361456|5\.4595837139265315|1\.9747931568167818|14\.061713679356888|801\.9545356980958|0\.8183559254837027|
+|min|1\.0|32\.1|13\.1|172\.0|2700\.0|2007\.0|
+|25%|86\.75|39\.225|15\.6|190\.0|3550\.0|2007\.0|
+|50%|172\.5|44\.45|17\.3|197\.0|4050\.0|2008\.0|
+|75%|258\.25|48\.5|18\.7|213\.0|4750\.0|2009\.0|
+|max|344\.0|59\.6|21\.5|231\.0|6300\.0|2009\.0|
+```
+
 ```python
 # Đếm số lượng cá thể theo loài
 df['species'].value_counts()
