@@ -16,13 +16,11 @@ Trực quan hóa dữ liệu
 - Một câu chuyện được truyền đạt qua hình ảnh
 - Thể hiện các mô hình (patterns), xu hướng (trends), và sự bất thường (anomalies) trong dữ liệu
 
+Chúng ta cùng "đọc thông tin" từ Hình 1. được lấy từ bài báo Genomic and transcriptomic studies on flavonoid biosynthesis in Lagerstroemia indica (DOI: 10.1186/s12870-024-04776-4) 
+
 ![Genome structure and annotation of the L. indica.](./imgs/Genome-structure-and-annotation-of-the-L-indica-A-Circos-map-of-the-genome_W640.jpg)
 
 *Hình 1: Genome structure and annotation of the Lagerstroemia indica. (A), Circos map of the genome, including (i) the length of the 24 pseudo-chromosomes, (ii) the protein-encoded gene map, (iii) tandem repeat sequences, (iv) transposon-encoded proteins, and (v) transposons. The synteny region of the 24 pseudo-chromosomes is shown by different colors. Minor tick bar = Mb. (B) Gene prediction by three different methods. (C) Gene function annotation in different databases. (DOI: 10.1186/s12870-024-04776-4)* 
-
-![Trực quan hóa dữ liệu](./imgs/introduction-to-data-visualization.png)
-
-*Hình 2: Trực quan hóa dữ liệu*
 
 ## 1.2 Các loại biểu đồ
 Có sáu loại biểu đồ chính:
@@ -34,7 +32,12 @@ Có sáu loại biểu đồ chính:
 - **Bản đồ (Maps)**: Trực quan hóa dữ liệu không gian, bao gồm bản đồ nhiệt phân vùng (choropleth maps), bản đồ ký hiệu tỷ lệ (proportional symbol maps), và các đường kết nối.
 
 ![Các loại biểu đồ](./imgs/01-chart-types.png)
+
 *Hình 2: Các loại biểu đồ*
+
+![Trực quan hóa dữ liệu](./imgs/introduction-to-data-visualization.png)
+
+*Hình 3: Trực quan hóa dữ liệu*
 
 ## 1.3 Các công cụ Trực quan hóa Dữ liệu phổ biến
 - Microsoft Excel
@@ -170,6 +173,17 @@ Trong phần thực hành này, chúng ta sẽ sử dụng bộ dữ liệu **Pa
 - `sex`: Giới tính (Male, Female)
 
 ### Tải dữ liệu
+
+Có 3 phương thức tải dữ liệu lên Google Colab, bao gồm:
+- Tải trực tiếp từ Internet thông qua lệnh wget
+- Tải từ Google Drive sau khi mount
+- Tải trực tiếp từ máy tính cá nhân thông qua biểu tượng thư mục.
+
+Trong bài thực hành, chúng ta sử dụng phương thức thứ 3, **Tải trực tiếp từ máy tính cá nhân thông qua biểu tượng thư mục**. 
+
+Bước 1: Tải dữ liệu Palmer Penguins về từ 
+
+Trong trường hợp bạn không tìm thấy thư mục, 
 ```python
 import pandas as pd
 import seaborn as sns
