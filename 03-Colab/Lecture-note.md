@@ -251,7 +251,6 @@ df.describe()
 
 Kết quả:
 
-```
 |index|rowid|bill\_length\_mm|bill\_depth\_mm|flipper\_length\_mm|body\_mass\_g|year|
 |---|---|---|---|---|---|---|
 |count|344\.0|342\.0|342\.0|342\.0|342\.0|344\.0|
@@ -262,16 +261,38 @@ Kết quả:
 |50%|172\.5|44\.45|17\.3|197\.0|4050\.0|2008\.0|
 |75%|258\.25|48\.5|18\.7|213\.0|4750\.0|2009\.0|
 |max|344\.0|59\.6|21\.5|231\.0|6300\.0|2009\.0|
-```
 
 ```python
 # Đếm số lượng cá thể theo loài
 df['species'].value_counts()
 ```
+
+Kết quả:
+
+| species | count |
+|---|---|
+| Adelie | 152 |
+| Gentoo | 124 |
+| Chinstrap | 68 |
+
 ```python
 # Kiểm tra giá trị thiếu (missing values)
 df.isnull().sum()
 ```
+
+Kết quả:
+
+|columns | missing values |
+|---|---|
+| rowid | 0 |
+| species | 0 |
+| island | 0 |
+| bill_length_mm | 2 |
+| bill_depth_mm | 2 |
+| flipper_length_mm | 2 |
+| body_mass_g | 2 |
+| sex | 11 |
+| year | 0 |
 
 > **Lưu ý:** Bộ dữ liệu penguins có một số giá trị thiếu (missing values). Đây là tình huống rất phổ biến trong dữ liệu sinh học thực tế.
 
