@@ -1,12 +1,12 @@
 # BIC26: Phân tích hệ gen: lắp ráp, chú giải và trực quan hóa
 
-## Tổ chức
+## Thông tin khóa học
 - Thời gian: 18/8/2026
   - Sáng: 8:30 - 12:00
   - Chiều: 13:30 - 17:00
 - Địa điểm: Tầng 6 - Tòa nhà VIỆN CÔNG NGHỆ, Số 25, Phố Vũ Ngọc Phan - P. Láng - Tp. Hà Nội
 - Công ty: LOBI
-- Công ty LOBI cung cấp tea-break miễn phí.
+- Công ty LOBI cung cấp tea-break miễn phí sáng chiều.
 - Học viên tự túc ăn trưa.
 
 ## Giảng viên
@@ -44,5 +44,4 @@ Học viên nắm rõ 3 gạch đầu dòng sau
 	- (Introduction/Slide) [Introduction to Genome Annotation](https://galaxyproject.github.io/training-material/topics/genome-annotation/tutorials/introduction/slides.html)
     - (Hands-on) [Bacterial Genome Annotation](https://galaxyproject.github.io/training-material/topics/genome-annotation/tutorials/bacterial-genome-annotation/tutorial.html)
 - Google Colab và Vibe Coding
-	- [Giới thiệu](03-Colab/Introduction.md)
-	- [Hands-on](03-Colab/Introduction.ipynb)
+	- [Lecture Note](03-Colab/Lecture-note.md)
