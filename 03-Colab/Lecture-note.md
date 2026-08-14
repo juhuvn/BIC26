@@ -478,6 +478,8 @@ Kết quả:
 
 ![Ma trận tương quan các đặc điểm hình thái chim cánh cụt](./imgs/bt005.png)
 
+**Lưu ý:** Cột rowid không phải là đặc điểm hình thái của chim cánh cụt, hãy yêu cầu Gemini vẽ lại mà không có cột này.
+
 ## 5.4 Tinh chỉnh biểu đồ bằng Vibe Coding
 
 Sau khi có biểu đồ cơ bản, kỹ năng quan trọng tiếp theo là **tinh chỉnh** để biểu đồ chuyên nghiệp và truyền tải thông tin rõ ràng hơn. Thay vì phải nhớ cú pháp Matplotlib phức tạp, bạn chỉ cần mô tả yêu cầu tinh chỉnh cho AI.
@@ -505,7 +507,7 @@ Sau khi có biểu đồ cơ bản, kỹ năng quan trọng tiếp theo là **ti
 **Kịch bản:** Bạn nhận được một bộ dữ liệu sinh học mới mà bạn chưa biết gì về nó. Hãy sử dụng AI để khám phá dữ liệu theo các bước sau:
 
 ### Bước 1: Tải dữ liệu và tóm tắt tổng quan
-- Tải một dataset mới (ví dụ: `sns.load_dataset("healthexp")` hoặc file CSV do giảng viên cung cấp).
+- Tải một dataset mới (ví dụ: `df=sns.load_dataset("healthexp")`)
 - Chạy `df.head()`, `df.info()`, `df.describe()`.
 - **Prompt cho AI:** *"Đây là kết quả `df.info()` và `df.describe()` của bộ dữ liệu tôi đang phân tích: [paste kết quả]. Hãy tóm tắt đặc điểm chính, chỉ ra các biến quan trọng và giá trị thiếu."*
 
@@ -542,11 +544,18 @@ plt.savefig('bieu_do_phan_phoi.svg', format='svg', bbox_inches='tight')
 plt.savefig('bieu_do_phan_phoi.pdf', format='pdf', bbox_inches='tight')
 ```
 
+**Lưu ý:** 
+- DPI:Dots Per Inch, độ phân giải của hình ảnh, càng cao thì hình ảnh càng sắc nét, càng lớn.
+- bbox_inches='tight': Loại bỏ khoảng trắng xung quanh biểu đồ, giúp hình ảnh trông đẹp hơn. Rất hữu ích khi muốn đưa vào báo cáo hoặc poster khoa học.
+- format='svg': Định dạng vector, có thể phóng to không vỡ, phù hợp cho bài báo cáo và poster khoa học.
+
 ### Lưu biểu đồ vào Google Drive
 ```python
 # Lưu trực tiếp vào Google Drive (sau khi đã mount)
 plt.savefig('/content/drive/MyDrive/bieu_do_phan_phoi.png', dpi=300, bbox_inches='tight')
 ```
+
+**Lưu ý:** Yêu cầu Gemini viết code để mount và lưu file vào Google Drive.
 
 ### Download Notebook
 - **Cách 1:** Vào menu **File** → **Download** → **Download .ipynb** (file notebook gốc).
@@ -578,6 +587,33 @@ plt.savefig('/content/drive/MyDrive/bieu_do_phan_phoi.png', dpi=300, bbox_inches
 **So sánh với Matplotlib/Seaborn:**
 - Matplotlib/Seaborn: biểu đồ tĩnh (static), phù hợp cho bài báo, poster in ấn.
 - Plotly: biểu đồ tương tác (interactive), phù hợp cho slide trình bày, dashboard, và khám phá dữ liệu.
+
+Code:
+
+```python
+import plotly.express as px
+
+# Tạo biểu đồ scatter tương tác
+fig = px.scatter(
+    df,
+    x='bill_length_mm',
+    y='body_mass_g',
+    color='species',
+    title='Mối quan hệ giữa chiều dài mỏ và cân nặng theo loài',
+    labels={
+        'bill_length_mm': 'Chiều dài mỏ (mm)',
+        'body_mass_g': 'Cân nặng (g)'
+    },
+    hover_data=['species', 'island', 'sex', 'bill_length_mm', 'body_mass_g'] # Các thông tin hiển thị khi di chuột
+)
+
+# Hiển thị biểu đồ
+fig.show()
+```
+
+Kết quả:
+
+![Mối quan hệ giữa chiều dài mỏ và cân nặng theo loài](./imgs/plotly.png)
 
 # 7 Mở rộng: Sử dụng Dữ liệu Thực từ Nghiên cứu (Tùy chọn)
 
@@ -611,16 +647,3 @@ Khi tạo biểu đồ cho bài báo, poster, hay luận văn, cần tuân thủ
 > Hãy định dạng lại biểu đồ trên theo chuẩn xuất bản khoa học: font Arial 10pt, DPI 300, kích thước 8×6 inches, bỏ viền trên và phải (sns.despine), bảng màu colorblind-friendly, lưu dưới dạng cả PNG và SVG.
 
 ---
-
-# Phụ lục: Gợi ý phân bổ thời gian buổi học (3–4 tiếng)
-
-| Thời gian | Nội dung | Hình thức |
-|-----------|----------|-----------|
-| 30 phút | §1–2: Lý thuyết trực quan hóa + Matplotlib/Seaborn | Giảng + Slide |
-| 15 phút | §3: Giới thiệu Vibe Coding (demo live) | Demo trực tiếp |
-| 15 phút | §4 + §5.1: Giới thiệu Colab + Làm quen thao tác | Thực hành có hướng dẫn |
-| 15 phút | §5.2: Tải và khám phá dữ liệu | Thực hành có hướng dẫn |
-| 60 phút | §5.3 + §5.4: Vẽ biểu đồ + Tinh chỉnh bằng Vibe Coding | Thực hành tự do + Q&A |
-| 30 phút | §5.5: Bài tập tổng hợp EDA | Thực hành nhóm |
-| 15 phút | §5.6: Xuất kết quả + Tổng kết | Hướng dẫn + Wrap-up |
-| *(Tùy chọn)* | §6–8: Plotly / Dữ liệu thực / Chuẩn xuất bản | Mở rộng nếu còn thời gian |
