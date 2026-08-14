@@ -256,12 +256,30 @@ Trong phần này, sinh viên sẽ thực hành **Vibe Coding**: thay vì gõ t�
 **Câu hỏi sinh học:** *Chiều dài mỏ của 3 loài chim cánh cụt phân bố như thế nào? Có sự chồng lấn (overlap) giữa các loài không?*
 
 **Prompt mẫu:**
-> Tôi có DataFrame `df` chứa dữ liệu Palmer Penguins (đã load bằng `sns.load_dataset("penguins")`). Hãy vẽ biểu đồ histogram thể hiện phân phối chiều dài mỏ (`bill_length_mm`) của các loài chim cánh cụt, phân biệt theo cột `species` bằng màu sắc khác nhau. Thêm tiêu đề và nhãn trục bằng tiếng Việt.
+> Tôi có DataFrame `df` chứa dữ liệu Palmer Penguins (đã load bằng `df = pd.read_csv("penguins.csv")`). Hãy vẽ biểu đồ histogram thể hiện phân phối chiều dài mỏ (`bill_length_mm`) của các loài chim cánh cụt, phân biệt theo cột `species` bằng màu sắc khác nhau. Thêm tiêu đề và nhãn trục bằng tiếng Việt.
 
 **Gợi ý quan sát kết quả:**
 - Loài nào có mỏ dài nhất trung bình?
 - Phân phối có bị lệch (skewed) không?
 - Vùng chồng lấn giữa các loài cho thấy điều gì về khả năng phân biệt loài dựa trên chiều dài mỏ?
+
+Code sinh ra
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(10, 6))
+sns.histplot(data=df, x='bill_length_mm', hue='species', multiple='stack', kde=True)
+plt.title('Phân phối chiều dài mỏ của các loài chim cánh cụt')
+plt.xlabel('Chiều dài mỏ (mm)')
+plt.ylabel('Số lượng cá thể')
+plt.show()
+```
+
+Kết quả
+
+![Phân phối chiều dài mỏ của các loài chim cánh cụt](./imgs/bt001.png)
 
 ---
 
