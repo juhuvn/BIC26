@@ -16,7 +16,7 @@ Trực quan hóa dữ liệu
 - Một câu chuyện được truyền đạt qua hình ảnh
 - Thể hiện các mô hình (patterns), xu hướng (trends), và sự bất thường (anomalies) trong dữ liệu
 
-![Genome structure and annotation of the L. indica.](./imgs/genome-structure-and-annotation-of-the-l.indica.png)
+![Genome structure and annotation of the L. indica.](./imgs/Genome-structure-and-annotation-of-the-L-indica-A-Circos-map-of-the-genome_W640.jpg)
 
 *Hình 1: Genome structure and annotation of the Lagerstroemia indica. (A), Circos map of the genome, including (i) the length of the 24 pseudo-chromosomes, (ii) the protein-encoded gene map, (iii) tandem repeat sequences, (iv) transposon-encoded proteins, and (v) transposons. The synteny region of the 24 pseudo-chromosomes is shown by different colors. Minor tick bar = Mb. (B) Gene prediction by three different methods. (C) Gene function annotation in different databases. (DOI: 10.1186/s12870-024-04776-4)* 
 
