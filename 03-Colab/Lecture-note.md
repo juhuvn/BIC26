@@ -181,7 +181,29 @@ Có 3 phương thức tải dữ liệu lên Google Colab, bao gồm:
 
 Trong bài thực hành, chúng ta sử dụng phương thức thứ 3, **Tải trực tiếp từ máy tính cá nhân thông qua biểu tượng thư mục**. 
 
-Bước 1: Tải dữ liệu Palmer Penguins về từ 
+- Bước 1: Tải dữ liệu Palmer Penguins về từ [https://github.com/juhuvn/BIC26/blob/main/03-Colab/datasets/palmer_penguins/penguins.csv](https://github.com/juhuvn/BIC26/blob/main/03-Colab/datasets/palmer_penguins/penguins.csv)
+- Bước 2: Upload file penguins.csv lên Google Colab thông qua biểu tượng thư mục (📁) bên trái → nút Upload (⬆️) → chọn file penguins.csv từ máy tính.
+- Bước 3: Tạo một Code Cell, gõ:
+```python
+import pandas as pd
+
+# Đọc file penguins.csv
+df = pd.read_csv("penguins.csv")
+
+# Xem 5 dòng đầu tiên
+df.head()
+```
+
+Kết quả thu được 
+
+|index|rowid|species|island|bill\_length\_mm|bill\_depth\_mm|flipper\_length\_mm|body\_mass\_g|sex|year|
+|---|---|---|---|---|---|---|---|---|---|
+|0|1|Adelie|Torgersen|39\.1|18\.7|181\.0|3750\.0|male|2007|
+|1|2|Adelie|Torgersen|39\.5|17\.4|186\.0|3800\.0|female|2007|
+|2|3|Adelie|Torgersen|40\.3|18\.0|195\.0|3250\.0|female|2007|
+|3|4|Adelie|Torgersen|NaN|NaN|NaN|NaN|NaN|2007|
+|4|5|Adelie|Torgersen|36\.7|19\.3|193\.0|3450\.0|female|2007|
+
 
 Trong trường hợp bạn không tìm thấy thư mục, 
 ```python
