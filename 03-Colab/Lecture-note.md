@@ -298,6 +298,25 @@ Kết quả
 - Loài nào có sự biến thiên cân nặng lớn nhất (hộp rộng nhất)?
 - Có outlier (điểm ngoại lai) không?
 
+Code:
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df, x='species', y='body_mass_g', hue='species', palette='pastel', legend=False)
+plt.title('So sánh cân nặng giữa các loài chim cánh cụt')
+plt.xlabel('Loài')
+plt.ylabel('Cân nặng (g)')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+```
+
+Kết quả:
+
+![So sánh cân nặng giữa các loài chim cánh cụt](./imgs/bt002.png)
+
 ---
 
 ### Bài tập 3: Biểu đồ Tương quan (Correlation)
@@ -311,6 +330,26 @@ Kết quả
 - Nhìn tổng thể (bỏ qua loài), có vẻ như mỏ dài hơn thì sâu hơn hay nông hơn? → Đây là ví dụ kinh điển về **Nghịch lý Simpson (Simpson's Paradox)**.
 - Khi tách riêng từng loài, xu hướng có đảo ngược không?
 - Loài nào có mối tương quan mạnh nhất giữa chiều dài và chiều sâu mỏ?
+
+Code: 
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Sử dụng lmplot để có đường hồi quy cho từng loài
+sns.lmplot(data=df, x='bill_length_mm', y='bill_depth_mm', hue='species', height=6, aspect=1.5)
+plt.title('Mối quan hệ giữa chiều dài và chiều sâu mỏ theo loài')
+plt.xlabel('Chiều dài mỏ (mm)')
+plt.ylabel('Chiều sâu mỏ (mm)')
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.show()
+```
+
+Kết quả:
+
+![So sánh chiều dài mỏ và chiều sâu mỏ giữa các loài chim cánh cụt](./imgs/bt003.png)
+
 
 ---
 
