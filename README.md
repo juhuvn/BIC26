@@ -2,17 +2,24 @@
 
 ## Tổ chức
 - Thời gian: 18/8/2026
+  - Sáng: 8:30 - 12:00
+  - Chiều: 13:30 - 17:00
 - Địa điểm: Tầng 6 - Tòa nhà VIỆN CÔNG NGHỆ, Số 25, Phố Vũ Ngọc Phan - P. Láng - Tp. Hà Nội
 - Công ty: LOBI
+- Công ty LOBI cung cấp tea-break miễn phí.
+- Học viên tự túc ăn trưa.
 
 ## Giảng viên
 - Giảng viên: TS. Nguyễn Cường
 - Trợ giảng: Nguyễn Tiến Đạt
 - Quản lý chung: Trần Minh Chi
 
+## Yêu cầu đối với học viên
+Khóa học được thiết kế để sử dụng các tài nguyên online miễn phí (UseGalaxy.org.au, Google Colab) do đó học viên chỉ cẩn đem theo laptop có cấu hình vừa phải là đủ. 
+
 ## Mục tiêu khóa học
 Học viên nắm rõ 3 gạch đầu dòng sau
-- Hiểu được vị trí, vai trò của Tin sinh học trong hệ thống khoa học sự sống
+- Nắm được 6 bài toán lớn trong Tin sinh học cũng như ứng dụng của chúng.
 - Học, thực hành và làm chủ phân tích Tin sinh học như thế nào?
 - Làm quen và thành thạo hai nền tảng: UseGalaxy và Google Colab để phân tích Tin sinh học và trực quan hóa dữ liệu.
 
