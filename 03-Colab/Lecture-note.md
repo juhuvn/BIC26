@@ -421,6 +421,26 @@ Kết quả:
 - Mẫu nghiên cứu có cân bằng giữa 3 loài không?
 - Nếu mẫu không cân bằng, điều này ảnh hưởng gì đến các phân tích so sánh?
 
+Code:
+
+```python
+import matplotlib.pyplot as plt
+
+# Đếm số lượng cá thể theo loài
+species_counts = df['species'].value_counts()
+
+# Tạo biểu đồ tròn
+plt.figure(figsize=(8, 8))
+plt.pie(species_counts, labels=species_counts.index, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
+plt.title('Tỷ lệ các loài chim cánh cụt trong mẫu nghiên cứu')
+plt.axis('equal') # Đảm bảo biểu đồ tròn không bị méo
+plt.show()
+```
+
+Kết quả:
+
+![Tỷ lệ các loài chim cánh cụt trong mẫu nghiên cứu](./imgs/bt004.png)
+
 ---
 
 ### Bài tập 5: Ma trận tương quan (Heatmap)
@@ -434,6 +454,29 @@ Kết quả:
 - Cặp biến nào có tương quan dương mạnh nhất (giá trị r gần +1)?
 - Cặp biến nào có tương quan âm (giá trị r âm)?
 - Kết quả này có phù hợp với hiểu biết sinh học của bạn không? (Ví dụ: chim nặng hơn thường có cánh dài hơn?)
+
+Code:
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Chọn các cột số học từ DataFrame
+df_numeric = df.select_dtypes(include=['number'])
+
+# Tính toán ma trận tương quan
+correlation_matrix = df_numeric.corr()
+
+# Tạo heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', linewidths=.5)
+plt.title('Ma trận tương quan các đặc điểm hình thái chim cánh cụt')
+plt.show()
+```
+
+Kết quả:
+
+![Ma trận tương quan các đặc điểm hình thái chim cánh cụt](./imgs/bt005.png)
 
 ## 5.4 Tinh chỉnh biểu đồ bằng Vibe Coding
 
