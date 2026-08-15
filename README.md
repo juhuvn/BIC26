@@ -11,7 +11,7 @@
 
 ## Giảng viên
 - Giảng viên: TS. Nguyễn Cường
-- Trợ giảng: Nguyễn Tiến Đạt
+- Trợ giảng: Nguyễn Tiến Đạt, Vũ Hoài Thu
 - Quản lý chung: Trần Minh Chi
 
 ## Yêu cầu đối với học viên
