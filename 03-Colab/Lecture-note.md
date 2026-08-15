@@ -604,35 +604,292 @@ Sau khi có biểu đồ cơ bản, kỹ năng quan trọng tiếp theo là **ti
 
 **Thực hành:** Chọn một biểu đồ từ Bài tập 1–5 và áp dụng ít nhất 3 yêu cầu tinh chỉnh từ bảng trên. Quan sát sự thay đổi sau mỗi lần tinh chỉnh.
 
-## 5.5 Bài tập tổng hợp: Khám phá Dữ liệu (EDA) với Vibe Coding
+## 5.5 Bài tập tổng hợp: Phân tích Dữ liệu RNA-seq Ung thư Gan từ GEO
 
-> Bài tập này mô phỏng quy trình phân tích dữ liệu thực tế, áp dụng trực tiếp quy trình đã học ở §3.4 "Làm gì khi chưa có ý đồ phân tích".
+### 5.5.1 Giới thiệu bài toán RNA-seq
 
-**Kịch bản:** Bạn nhận được một bộ dữ liệu sinh học mới mà bạn chưa biết gì về nó. Hãy sử dụng AI để khám phá dữ liệu theo các bước sau:
+**RNA-seq (RNA Sequencing)** là kỹ thuật giải trình tự thế hệ mới cho phép đo lường mức độ biểu hiện (expression level) của hàng nghìn gen cùng lúc. Trong nghiên cứu ung thư, RNA-seq được sử dụng rộng rãi để:
+- **So sánh biểu hiện gen** giữa mô ung thư và mô bình thường
+- **Tìm gen biểu hiện khác biệt (DEG — Differentially Expressed Genes)**: những gen tăng hoặc giảm biểu hiện đáng kể trong ung thư
+- **Phân tích con đường sinh học (Pathway Analysis)**: xác định các con đường tín hiệu tế bào bị rối loạn trong ung thư
 
-### Bước 1: Tải dữ liệu và tóm tắt tổng quan
-- Tải một dataset mới (ví dụ: `df=sns.load_dataset("healthexp")`)
-- Chạy `df.head()`, `df.info()`, `df.describe()`.
-- **Prompt cho AI:** *"Đây là kết quả `df.info()` và `df.describe()` của bộ dữ liệu tôi đang phân tích: [paste kết quả]. Hãy tóm tắt đặc điểm chính, chỉ ra các biến quan trọng và giá trị thiếu."*
+**Quy trình phân tích RNA-seq đơn giản hóa:**
 
-### Bước 2: Nhờ AI đề xuất câu hỏi phân tích
-- **Prompt cho AI:** *"Dựa vào cấu trúc dữ liệu trên, hãy gợi ý cho tôi 5 câu hỏi phân tích có giá trị nhất hoặc các giả thuyết có thể kiểm định bằng biểu đồ."*
+```
+Mẫu bệnh (Tumor) vs Mẫu chứng (Normal)
+    ↓
+Ma trận biểu hiện gen (Expression Matrix)
+    ↓
+Phân tích DEG (log2FC + p-value)
+    ↓
+Trực quan hóa: Volcano Plot, Heatmap
+    ↓
+Phân tích Pathway: Gen tham gia con đường nào?
+```
 
-### Bước 3: Chọn câu hỏi và vẽ biểu đồ
-- Chọn 2 câu hỏi từ danh sách AI gợi ý.
-- Yêu cầu AI vẽ biểu đồ trả lời cho từng câu hỏi.
-- Chạy code và quan sát kết quả.
+### 5.5.2 Cơ sở dữ liệu GEO (Gene Expression Omnibus)
 
-### Bước 4: Tinh chỉnh 1 biểu đồ cho đẹp
-- Chọn 1 biểu đồ yêu thích, áp dụng các kỹ thuật tinh chỉnh đã học ở §5.4.
-- Mục tiêu: tạo ra biểu đồ đạt chuẩn có thể đưa vào báo cáo hoặc poster khoa học.
+**[GEO (Gene Expression Omnibus)](https://www.ncbi.nlm.nih.gov/geo/)** là kho dữ liệu công cộng lớn nhất thế giới về dữ liệu biểu hiện gen, do NCBI (National Center for Biotechnology Information) quản lý.
 
-### Bước 5: Viết giải thích phát hiện
-- Tạo một **Text Cell** (Markdown) ngay bên dưới biểu đồ.
-- Viết 3–5 câu giải thích phát hiện (finding) từ biểu đồ, bao gồm:
-  - Bạn đã quan sát được xu hướng/mẫu (pattern) gì?
-  - Có điểm bất thường (anomaly) hay kết quả bất ngờ nào không?
-  - Phát hiện này có ý nghĩa sinh học gì?
+**Đặc điểm chính:**
+- Chứa hơn **200.000 bộ dữ liệu** từ khắp nơi trên thế giới
+- Dữ liệu đa dạng: Microarray, RNA-seq, ChIP-seq, ATAC-seq,...
+- **Miễn phí hoàn toàn** — bất kỳ ai cũng có thể tải về và phân tích
+- Mỗi bộ dữ liệu có mã định danh dạng **GSExxxxx** (ví dụ: GSE138485)
+
+**Cách tìm dữ liệu trên GEO:**
+1. Truy cập [https://www.ncbi.nlm.nih.gov/geo/](https://www.ncbi.nlm.nih.gov/geo/)
+2. Tìm kiếm theo từ khóa, ví dụ: *"hepatocellular carcinoma RNA-seq"*
+3. Lọc theo loại thí nghiệm: *"Expression profiling by high throughput sequencing"*
+4. Chọn bộ dữ liệu phù hợp và tải về
+
+### 5.5.3 Hai bộ dữ liệu RNA-seq Ung thư Gan (HCC)
+
+Trong bài tập này, chúng ta sẽ sử dụng 2 bộ dữ liệu RNA-seq so sánh mô ung thư gan (Hepatocellular Carcinoma — HCC) với mô gan bình thường/lân cận:
+
+| Thông tin | Dataset 1 | Dataset 2 |
+|-----------|-----------|-----------|
+| **Mã GEO** | [GSE138485](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138485) | [GSE104310](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE104310) |
+| **Mô tả** | So sánh biểu hiện gen giữa 32 cặp mô HCC và mô gan lân cận (adjacent non-tumor) | Phân tích biểu hiện gen trong HCC và mô gan bình thường |
+| **Loại dữ liệu** | RNA-seq (bulk) | RNA-seq (bulk) |
+| **Sinh vật** | Homo sapiens (Người) | Homo sapiens (Người) |
+| **Nhóm bệnh** | Ung thư biểu mô tế bào gan (HCC) | Ung thư biểu mô tế bào gan (HCC) |
+| **Nhóm chứng** | Mô gan lân cận không ung thư | Mô gan bình thường |
+
+> **Lưu ý cho sinh viên:** Trong nghiên cứu ung thư, nhóm chứng (control) thường là "mô lân cận không ung thư" (adjacent non-tumor tissue) lấy từ cùng bệnh nhân, vì rất khó thu thập mô gan từ người hoàn toàn khỏe mạnh. Đây là thực tế phổ biến trong dữ liệu lâm sàng.
+
+---
+
+### 5.5.4 Thực hành: Tải và phân tích dữ liệu từ GEO
+
+#### Bước 1: Cài đặt thư viện và tải dữ liệu từ GEO
+
+**Prompt cho AI:**
+> Tôi đang làm việc trên Google Colab. Hãy viết code Python để:
+> 1. Cài đặt thư viện `GEOparse` bằng pip
+> 2. Tải bộ dữ liệu GSE138485 từ GEO
+> 3. Trích xuất ma trận biểu hiện gen (expression matrix) dưới dạng DataFrame
+> 4. Hiển thị thông tin cơ bản: kích thước ma trận, 5 dòng đầu, và danh sách các mẫu (samples)
+
+**Code tham khảo:**
+
+```python
+# Cài đặt thư viện GEOparse
+!pip install GEOparse
+
+import GEOparse
+import pandas as pd
+
+# Tải dataset từ GEO (có thể mất 2-5 phút)
+gse = GEOparse.get_GEO(geo="GSE138485", destdir="./geo_data")
+
+# Xem thông tin tổng quan
+print("Tiêu đề:", gse.metadata['title'][0])
+print("Tóm tắt:", gse.metadata['summary'][0][:200], "...")
+print("Số mẫu:", len(gse.gsms))
+
+# Liệt kê các mẫu
+for gsm_name, gsm in list(gse.gsms.items())[:5]:
+    print(f"  {gsm_name}: {gsm.metadata['title'][0]}")
+```
+
+#### Bước 2: Chuẩn bị dữ liệu và phân nhóm Tumor vs Normal
+
+**Prompt cho AI:**
+> Từ dữ liệu GSE138485 đã tải, hãy:
+> 1. Trích xuất ma trận biểu hiện gen thành DataFrame (hàng = gen, cột = mẫu)
+> 2. Phân loại các mẫu thành 2 nhóm: "Tumor" và "Normal" dựa trên metadata
+> 3. Hiển thị số lượng mẫu mỗi nhóm
+> 4. Lọc bỏ các gen có biểu hiện quá thấp (tổng < 10 across all samples)
+
+#### Bước 3: Phân tích gen biểu hiện khác biệt (DEG Analysis)
+
+**Prompt cho AI:**
+> Tôi có DataFrame `expression_df` (hàng = gen, cột = mẫu) và danh sách `tumor_samples`, `normal_samples`. Hãy viết code Python để:
+> 1. Với mỗi gen, tính **log2 Fold Change** = log2(trung bình Tumor / trung bình Normal)
+> 2. Với mỗi gen, thực hiện **t-test** giữa 2 nhóm để có p-value
+> 3. Điều chỉnh p-value bằng phương pháp **Benjamini-Hochberg (FDR)**
+> 4. Tạo DataFrame kết quả gồm: gene_name, log2FC, p_value, p_adjusted
+> 5. Xác định DEGs theo ngưỡng: |log2FC| > 1 VÀ p_adjusted < 0.05
+> 6. Báo cáo: bao nhiêu gen tăng biểu hiện (up-regulated), bao nhiêu gen giảm (down-regulated)
+
+**Code tham khảo:**
+
+```python
+import numpy as np
+from scipy import stats
+from statsmodels.stats.multitest import multipletests
+
+# Tính log2 Fold Change
+tumor_mean = expression_df[tumor_samples].mean(axis=1)
+normal_mean = expression_df[normal_samples].mean(axis=1)
+
+# Thêm pseudocount để tránh log(0)
+log2fc = np.log2((tumor_mean + 1) / (normal_mean + 1))
+
+# Thực hiện t-test cho từng gen
+p_values = []
+for gene in expression_df.index:
+    t_stat, p_val = stats.ttest_ind(
+        expression_df.loc[gene, tumor_samples],
+        expression_df.loc[gene, normal_samples]
+    )
+    p_values.append(p_val)
+
+# Điều chỉnh p-value (FDR)
+_, p_adjusted, _, _ = multipletests(p_values, method='fdr_bh')
+
+# Tạo DataFrame kết quả
+deg_results = pd.DataFrame({
+    'gene': expression_df.index,
+    'log2FC': log2fc.values,
+    'p_value': p_values,
+    'p_adjusted': p_adjusted
+})
+
+# Xác định DEGs
+deg_results['significant'] = (abs(deg_results['log2FC']) > 1) & (deg_results['p_adjusted'] < 0.05)
+deg_results['direction'] = deg_results['log2FC'].apply(
+    lambda x: 'Up' if x > 1 else ('Down' if x < -1 else 'NS')
+)
+
+# Báo cáo
+up_genes = deg_results[deg_results['direction'] == 'Up']
+down_genes = deg_results[deg_results['direction'] == 'Down']
+print(f"Tổng DEGs: {deg_results['significant'].sum()}")
+print(f"  - Gen tăng biểu hiện (Up-regulated): {len(up_genes)}")
+print(f"  - Gen giảm biểu hiện (Down-regulated): {len(down_genes)}")
+```
+
+---
+
+### 5.5.5 Trực quan hóa kết quả DEG
+
+#### A. Volcano Plot — Biểu đồ "Núi lửa"
+
+Volcano plot là biểu đồ kinh điển trong phân tích DEG, hiển thị đồng thời **mức độ thay đổi** (log2FC, trục X) và **ý nghĩa thống kê** (-log10 p-value, trục Y) của tất cả gen.
+
+**Prompt cho AI:**
+> Dùng DataFrame `deg_results` (có các cột: gene, log2FC, p_value, p_adjusted, direction). Hãy vẽ **Volcano Plot** với:
+> - Trục X: log2FC
+> - Trục Y: -log10(p_adjusted)
+> - Màu: đỏ cho gen Up-regulated (log2FC > 1, p_adj < 0.05), xanh dương cho gen Down-regulated (log2FC < -1, p_adj < 0.05), xám cho gen không có ý nghĩa
+> - Thêm 2 đường thẳng đứng tại log2FC = ±1 (nét đứt)
+> - Thêm 1 đường ngang tại -log10(0.05)
+> - Ghi chú (annotate) tên 5 gen Up và 5 gen Down có p_adjusted nhỏ nhất
+> - Tiêu đề: "Volcano Plot — Gen biểu hiện khác biệt trong Ung thư Gan (HCC)"
+> - Kích thước 12×8 inches, DPI 300
+
+**Gợi ý quan sát kết quả:**
+- Gen nằm ở góc phải-trên là gen **tăng biểu hiện mạnh và có ý nghĩa thống kê cao** → có thể là marker tiềm năng cho HCC
+- Gen nằm ở góc trái-trên là gen **giảm biểu hiện mạnh** → có thể là tumor suppressor bị ức chế
+
+#### B. Heatmap — Top DEGs
+
+Heatmap hiển thị mức biểu hiện gen dưới dạng bản đồ nhiệt, giúp nhìn rõ **mẫu biểu hiện (expression pattern)** giữa các nhóm.
+
+**Prompt cho AI:**
+> Từ DataFrame `deg_results`, lọc ra **top 30 gen có p_adjusted nhỏ nhất** (15 Up + 15 Down). Vẽ **heatmap** biểu hiện gen của 30 gen này trên tất cả mẫu Tumor và Normal, với:
+> - Hàng: gen (clustered bằng hierarchical clustering)
+> - Cột: mẫu (nhóm theo Tumor/Normal)
+> - Chuẩn hóa z-score theo hàng
+> - Bảng màu `RdBu_r` (đỏ = biểu hiện cao, xanh = biểu hiện thấp)
+> - Thêm thanh màu (color bar) phía trên cột để phân biệt Tumor (đỏ) và Normal (xanh lá)
+> - Tiêu đề: "Heatmap — Top 30 gen biểu hiện khác biệt (HCC vs Normal)"
+> - Dùng `seaborn.clustermap()`, kích thước 14×10 inches
+
+**Gợi ý quan sát kết quả:**
+- Các mẫu Tumor và Normal có tách biệt rõ ràng không? (clustering theo cột)
+- Có nhóm gen nào cùng tăng hoặc cùng giảm không? → có thể thuộc cùng một con đường sinh học
+
+#### C. MA Plot
+
+**Prompt cho AI:**
+> Vẽ **MA Plot** từ `deg_results`:
+> - Trục X: log2(baseMean) — trung bình biểu hiện tổng (A = average expression)
+> - Trục Y: log2FC (M = log ratio)
+> - Tô màu gen có ý nghĩa thống kê (p_adjusted < 0.05) bằng đỏ, còn lại xám
+> - Tiêu đề: "MA Plot — Mối quan hệ giữa mức biểu hiện trung bình và mức thay đổi"
+
+---
+
+### 5.5.6 Phân tích con đường sinh học (Pathway Enrichment Analysis)
+
+Sau khi có danh sách DEGs, câu hỏi tiếp theo là: **Các gen này thuộc con đường sinh học (pathway) nào?** Phân tích này giúp hiểu *cơ chế sinh học* đằng sau sự thay đổi biểu hiện gen.
+
+**Prompt cho AI:**
+> Tôi có danh sách gen tăng biểu hiện `up_genes_list` và gen giảm biểu hiện `down_genes_list` trong ung thư gan. Hãy viết code Python để:
+> 1. Cài đặt thư viện `gseapy`
+> 2. Thực hiện **Gene Ontology (GO) Enrichment Analysis** cho gen tăng biểu hiện
+> 3. Thực hiện **KEGG Pathway Enrichment Analysis** cho gen tăng biểu hiện
+> 4. Hiển thị top 10 pathway có ý nghĩa nhất (p_adjusted < 0.05)
+> 5. Vẽ **bar plot nằm ngang** cho top 10 KEGG pathways, trục X là -log10(p_adjusted), sắp xếp từ trên xuống, thanh màu theo số gen liên quan (gene count)
+
+**Code tham khảo:**
+
+```python
+!pip install gseapy
+
+import gseapy as gp
+
+# KEGG Pathway Enrichment
+kegg_results = gp.enrichr(
+    gene_list=up_genes_list,
+    gene_sets='KEGG_2021_Human',
+    organism='human',
+    outdir='./enrichment_results'
+)
+
+# Xem top 10 pathway
+top_kegg = kegg_results.results.head(10)
+print(top_kegg[['Term', 'Adjusted P-value', 'Genes']])
+```
+
+**Prompt vẽ biểu đồ:**
+> Từ kết quả KEGG enrichment (`top_kegg`), vẽ **horizontal bar plot** cho top 10 pathways:
+> - Trục Y: tên pathway (rút gọn nếu quá dài)
+> - Trục X: -log10(Adjusted P-value)
+> - Màu sắc thanh: gradient theo số gen (gene count), bảng màu `YlOrRd`
+> - Thêm đường thẳng đứng tại -log10(0.05) = 1.3 (ngưỡng ý nghĩa)
+> - Tiêu đề: "Top 10 KEGG Pathways — Gen tăng biểu hiện trong HCC"
+> - Kích thước 12×6 inches
+
+**Gợi ý quan sát kết quả:**
+- Các pathway liên quan đến **chu kỳ tế bào (cell cycle)**, **sửa chữa DNA**, **tín hiệu p53** thường xuất hiện trong ung thư gan
+- Pathway liên quan đến **chuyển hóa (metabolism)** giảm → phản ánh sự mất chức năng gan bình thường
+- So sánh kết quả với kiến thức sinh học đã biết: kết quả có hợp lý không?
+
+---
+
+### 5.5.7 Tổng hợp: Dashboard phân tích HCC
+
+**Prompt cho AI:**
+> Hãy tạo **một figure dashboard** tổng hợp kết quả phân tích HCC với bố cục **2×2** gồm:
+> - (A) Volcano Plot — gen biểu hiện khác biệt
+> - (B) Heatmap — top 20 DEGs
+> - (C) Bar plot — top 10 KEGG pathways (gen tăng biểu hiện)
+> - (D) Bar plot — top 10 GO Biological Process (gen giảm biểu hiện)
+>
+> Kích thước 20×16 inches, thêm nhãn (A)–(D), tiêu đề chung "Phân tích biểu hiện gen trong Ung thư Gan (HCC) — Dataset GSE138485", lưu PNG 300 DPI.
+
+### 5.5.8 Bài tập mở rộng: So sánh 2 dataset
+
+> **Câu hỏi nâng cao:** Các gen biểu hiện khác biệt có nhất quán giữa 2 bộ dữ liệu (GSE138485 và GSE104310) không?
+
+**Prompt cho AI:**
+> Tôi đã phân tích DEG cho 2 dataset HCC:
+> - Dataset 1 (GSE138485): danh sách DEGs lưu trong `deg_results_1`
+> - Dataset 2 (GSE104310): danh sách DEGs lưu trong `deg_results_2`
+>
+> Hãy:
+> 1. Tìm **gen chung (overlapping genes)** xuất hiện trong cả 2 danh sách DEGs
+> 2. Vẽ **Venn Diagram** thể hiện số gen riêng và chung
+> 3. Với các gen chung, vẽ **scatter plot** so sánh log2FC giữa 2 dataset (trục X = log2FC dataset 1, trục Y = log2FC dataset 2)
+> 4. Tính hệ số tương quan Pearson giữa log2FC của 2 dataset
+
+**Ý nghĩa:** Nếu các gen biểu hiện khác biệt nhất quán giữa nhiều dataset độc lập, chúng có khả năng là **biomarker đáng tin cậy** cho ung thư gan.
+
+
 
 ## 5.6 Xuất kết quả và chia sẻ
 
