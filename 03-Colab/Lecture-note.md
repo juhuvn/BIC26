@@ -480,6 +480,110 @@ Kết quả:
 
 **Lưu ý:** Cột rowid không phải là đặc điểm hình thái của chim cánh cụt, hãy yêu cầu Gemini vẽ lại mà không có cột này.
 
+---
+
+### Bài tập 6: Dashboard tổng hợp — Figure với nhiều biểu đồ con (Subplots)
+
+Trong thực tế, khi trình bày kết quả phân tích trong bài báo hoặc poster khoa học, ta thường cần **ghép nhiều biểu đồ vào cùng một hình (figure)** để người đọc có cái nhìn tổng quan và so sánh các khía cạnh khác nhau của dữ liệu. Bài tập này sẽ giúp bạn:
+- Học cách sắp xếp bố cục (layout) nhiều biểu đồ con trên cùng 1 figure
+- Kết hợp nhiều loại biểu đồ khác nhau để kể một "câu chuyện dữ liệu" hoàn chỉnh
+- Thực hành viết nhận xét (insight) cho từng biểu đồ
+
+**Câu hỏi sinh học:** *Từ dữ liệu Palmer Penguins, ta có thể rút ra những phát hiện (insights) quan trọng nào về đặc điểm hình thái của 3 loài chim cánh cụt?*
+
+**Prompt mẫu:**
+> Dùng dữ liệu `df` (Palmer Penguins, đã load bằng `pd.read_csv("penguins.csv")`). Hãy tạo **một figure duy nhất** với bố cục **2 hàng × 2 cột** (4 biểu đồ con), gồm:
+>
+> - **Ô trên-trái (A)**: Biểu đồ violin so sánh cân nặng (`body_mass_g`) giữa 3 loài, phân biệt thêm theo giới tính (`sex`) bằng `split=True`.
+> - **Ô trên-phải (B)**: Scatter plot thể hiện mối quan hệ giữa chiều dài cánh (`flipper_length_mm`) và cân nặng (`body_mass_g`), phân biệt theo loài bằng màu.
+> - **Ô dưới-trái (C)**: Biểu đồ đếm (countplot) số lượng cá thể theo loài và đảo (`island`), dùng bar plot nhóm.
+> - **Ô dưới-phải (D)**: Heatmap ma trận tương quan của 4 biến số (bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g), hiển thị giá trị r, loại bỏ cột rowid và year.
+>
+> Yêu cầu: kích thước figure 16×12 inches, mỗi ô có tiêu đề tiếng Việt, thêm nhãn (A), (B), (C), (D) ở góc trên-trái mỗi ô, bảng màu `Set2`, thêm `plt.tight_layout()` để các biểu đồ không bị chồng lấn. Lưu file PNG 300 DPI.
+
+**Code:**
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+# Khởi tạo figure và subplots với bố cục 2x2
+fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+fig.patch.set_facecolor('white') # Đặt màu nền cho figure
+
+# --- Ô trên-trái (A): Biểu đồ violin --- 
+
+sns.violinplot(ax=axes[0, 0], data=df, x='species', y='body_mass_g', hue='sex', split=True, palette='Set2', inner='quartile')
+axes[0, 0].set_title('A: So sánh cân nặng giữa các loài chim cánh cụt theo giới tính')
+axes[0, 0].set_xlabel('Loài')
+axes[0, 0].set_ylabel('Cân nặng (g)')
+axes[0, 0].text(0.01, 0.99, '(A)', transform=axes[0, 0].transAxes, fontsize=14, va='top', ha='left')
+
+# --- Ô trên-phải (B): Scatter plot --- 
+
+sns.scatterplot(ax=axes[0, 1], data=df, x='flipper_length_mm', y='body_mass_g', hue='species', palette='Set2')
+axes[0, 1].set_title('B: Mối quan hệ giữa chiều dài cánh và cân nặng')
+axes[0, 1].set_xlabel('Chiều dài cánh (mm)')
+axes[0, 1].set_ylabel('Cân nặng (g)')
+axes[0, 1].text(0.01, 0.99, '(B)', transform=axes[0, 1].transAxes, fontsize=14, va='top', ha='left')
+
+# --- Ô dưới-trái (C): Biểu đồ đếm (countplot) --- 
+
+sns.countplot(ax=axes[1, 0], data=df, x='species', hue='island', palette='Set2')
+axes[1, 0].set_title('C: Số lượng cá thể theo loài và đảo')
+axes[1, 0].set_xlabel('Loài')
+axes[1, 0].set_ylabel('Số lượng cá thể')
+axes[1, 0].text(0.01, 0.99, '(C)', transform=axes[1, 0].transAxes, fontsize=14, va='top', ha='left')
+
+# --- Ô dưới-phải (D): Heatmap ma trận tương quan --- 
+
+# Chọn các biến số cần thiết và loại bỏ các cột không dùng
+df_corr = df[['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']]
+correlation_matrix = df_corr.corr()
+
+sns.heatmap(ax=axes[1, 1], data=correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', linewidths=.5)
+axes[1, 1].set_title('D: Ma trận tương quan của các đặc điểm hình thái')
+axes[1, 1].text(0.01, 0.99, '(D)', transform=axes[1, 1].transAxes, fontsize=14, va='top', ha='left')
+
+# Điều chỉnh bố cục để tránh chồng lấn
+plt.tight_layout()
+
+# Lưu hình ảnh dưới dạng file PNG với 300 DPI
+plt.savefig('penguin_analysis_2x2.png', dpi=300)
+
+# Hiển thị figure
+plt.show()
+```
+
+**Kết quả:**
+
+![Dashboard tổng hợp đặc điểm hình thái chim cánh cụt](./imgs/bt006.png)
+
+**Hướng dẫn diễn giải — Viết nhận xét cho từng ô:**
+
+Sau khi có biểu đồ, sinh viên thực hành viết nhận xét khoa học cho từng ô. Dưới đây là gợi ý:
+
+**(A) Phân phối cân nặng theo loài và giới tính:**
+- Gentoo nặng nhất trong 3 loài, con đực nặng hơn con cái rõ rệt ở cả 3 loài.
+- Sự khác biệt giới tính (sexual dimorphism) về cân nặng thể hiện rõ nhất ở loài nào?
+
+**(B) Mối quan hệ chiều dài cánh — cân nặng:**
+- Có tương quan dương mạnh: cánh dài hơn → nặng hơn.
+- 3 loài tạo thành 3 cụm (cluster) tách biệt rõ ràng → kích thước cánh + cân nặng có thể dùng để phân loại loài.
+
+**(C) Phân bố theo loài và đảo:**
+- Mỗi loài có phân bố địa lý khác nhau: Gentoo chỉ sống trên đảo Biscoe, Chinstrap chỉ trên đảo Dream.
+- Adelie là loài duy nhất xuất hiện ở cả 3 đảo → loài phổ biến nhất, phân bố rộng nhất.
+
+**(D) Ma trận tương quan:**
+- `flipper_length_mm` và `body_mass_g` có tương quan dương mạnh nhất (r ≈ 0.87).
+- `bill_depth_mm` tương quan âm với `flipper_length_mm` → Nghịch lý Simpson ẩn bên trong (khi tách theo loài thì xu hướng có thể khác).
+
+> **Bài học rút ra:** Một figure dashboard tổng hợp giúp người đọc nhanh chóng nắm bắt nhiều khía cạnh của dữ liệu trong một cái nhìn duy nhất. Đây là kỹ năng rất quan trọng khi trình bày kết quả trong bài báo, poster, hoặc báo cáo khoa học.
+
+
+
 ## 5.4 Tinh chỉnh biểu đồ bằng Vibe Coding
 
 Sau khi có biểu đồ cơ bản, kỹ năng quan trọng tiếp theo là **tinh chỉnh** để biểu đồ chuyên nghiệp và truyền tải thông tin rõ ràng hơn. Thay vì phải nhớ cú pháp Matplotlib phức tạp, bạn chỉ cần mô tả yêu cầu tinh chỉnh cho AI.
@@ -647,3 +751,5 @@ Khi tạo biểu đồ cho bài báo, poster, hay luận văn, cần tuân thủ
 > Hãy định dạng lại biểu đồ trên theo chuẩn xuất bản khoa học: font Arial 10pt, DPI 300, kích thước 8×6 inches, bỏ viền trên và phải (sns.despine), bảng màu colorblind-friendly, lưu dưới dạng cả PNG và SVG.
 
 ---
+
+Kết thúc!
