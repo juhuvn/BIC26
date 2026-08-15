@@ -32,7 +32,7 @@ Học viên nắm rõ 3 gạch đầu dòng sau
   - Thực hành với trực quan hóa dữ liệu bằng Google Colab với sự trợ giúp của Gemini
 
 ## Tài nguyên
-- Giới thiệu về Tin sinh học: [Link](./imgs/Biinformatics%20Introduction%20-%20BIC26.pdf)
+- Giới thiệu về Tin sinh học: [Link](./01-Introduction/01-introduction.pdf)
 - GTN: Galaxy Training Network
   - Trang chủ GTN: [https://training.galaxyproject.org/](https://training.galaxyproject.org/)
   - [Introduction to Galaxy](https://galaxyproject.github.io/training-material/topics/introduction/tutorials/introduction/slides.html#1)
