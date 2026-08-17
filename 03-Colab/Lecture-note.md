@@ -1,4 +1,4 @@
-Trực quan hóa dữ liệu
+Trực quan hóa dữ liệu với AI
 ==================
 
 **Dr. Cuong Nguyen**
@@ -604,7 +604,7 @@ Sau khi có biểu đồ cơ bản, kỹ năng quan trọng tiếp theo là **ti
 
 **Thực hành:** Chọn một biểu đồ từ Bài tập 1–5 và áp dụng ít nhất 3 yêu cầu tinh chỉnh từ bảng trên. Quan sát sự thay đổi sau mỗi lần tinh chỉnh.
 
-## 5.6 Xuất kết quả và chia sẻ
+## 5.5 Xuất kết quả và chia sẻ
 
 ### Lưu biểu đồ dưới dạng hình ảnh
 ```python
