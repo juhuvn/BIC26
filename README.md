@@ -44,5 +44,6 @@ Học viên nắm rõ 3 gạch đầu dòng sau
 	- (Introduction/Slide) [Introduction to Genome Annotation](https://galaxyproject.github.io/training-material/topics/genome-annotation/tutorials/introduction/slides.html)
     - (Hands-on) [Bacterial Genome Annotation](https://galaxyproject.github.io/training-material/topics/genome-annotation/tutorials/bacterial-genome-annotation/tutorial.html)
 - Google Colab và Vibe Coding
-	- [Lecture Note](03-Colab/Lecture-note.md)
+	- [Lecture Note (online)](03-Colab/Lecture-note.md)
+  - [Lecture Note (PDF)](03-Colab/Lecture-note.pdf)
 
